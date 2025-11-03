@@ -1,0 +1,267 @@
+/* Core Styling - Mimicking a system file viewer */
+:root {
+    --nyp-blue-dark: #002D58; /* North Yorkshire Police Dark Blue */
+    --nyp-blue-light: #00458C;
+    --text-color: #E0E0E0;
+    --background-color: #121212; /* Dark background for professional feel */
+    --accent-color: #FFB300; /* Subtle gold/amber for accents */
+    --line-color: #333333;
+    --font-stack: 'Roboto Mono', monospace, Arial, sans-serif;
+}
+
+body {
+    font-family: var(--font-stack);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+/* Header & Footer */
+.nyp-header {
+    background-color: var(--nyp-blue-dark);
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.logo-box {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.logo-placeholder {
+    padding: 5px 8px;
+    background-color: var(--accent-color);
+    color: var(--nyp-blue-dark);
+    margin-right: 10px;
+    border-radius: 2px;
+}
+
+.case-info-header {
+    font-size: 0.85em;
+    text-align: right;
+}
+
+.status-indicator {
+    display: inline-block;
+    padding: 2px 8px;
+    margin-right: 10px;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 0.75em;
+    letter-spacing: 0.5px;
+}
+
+.active {
+    background-color: #4CAF50; /* Green for Active */
+    color: white;
+}
+
+.nyp-footer {
+    background-color: var(--nyp-blue-dark);
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    padding: 10px;
+    font-size: 0.75em;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Main Content */
+.case-file-container {
+    max-width: 900px;
+    margin: 20px auto 60px auto; /* Increased bottom margin for footer */
+    padding: 30px;
+    background-color: #1E1E1E; /* Slightly lighter dark for content area */
+    border: 1px solid var(--line-color);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.case-title {
+    color: var(--accent-color);
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--nyp-blue-light);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    text-align: center;
+}
+
+.metadata-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--line-color);
+}
+
+.metadata-grid p {
+    margin: 0;
+    padding: 0;
+}
+
+hr {
+    border: none;
+    border-top: 1px dashed var(--line-color);
+    margin: 20px 0;
+}
+
+/* Section Styling */
+.report-section {
+    margin-bottom: 30px;
+    padding-left: 10px;
+    border-left: 4px solid var(--nyp-blue-light);
+}
+
+.report-section h2 {
+    color: white;
+    text-transform: uppercase;
+    font-size: 1.4em;
+    margin-top: 0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--line-color);
+    padding-bottom: 5px;
+}
+
+.report-section h3 {
+    color: var(--accent-color);
+    font-size: 1.1em;
+    margin-top: 20px;
+}
+
+.report-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.report-section ul li:before {
+    content: "•";
+    color: var(--accent-color);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+/* Specific Element Styling */
+.analysis-box {
+    background-color: #0d0d0d;
+    border: 1px solid #FF0000; /* Red border for critical/negative verdict */
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+
+.analysis-box .verdict {
+    color: #FF0000; /* Red text for the verdict */
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+
+.analysis-box .threshold {
+    color: #FFA500; /* Orange for the threshold note */
+}
+
+.poi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.poi-card {
+    background-color: #2a2a2a;
+    padding: 15px;
+    border: 1px solid var(--nyp-blue-light);
+    border-radius: 4px;
+}
+
+.poi-card h3 {
+    margin-top: 0;
+    color: #A0C4FF; /* Light blue for POI names */
+}
+
+.geo-lead {
+    border-left: 3px solid var(--accent-color);
+    padding-left: 15px;
+    margin: 15px 0;
+    font-style: italic;
+    color: #AAAAAA;
+}
+
+/* Appendix Table */
+.appendix-section {
+    border-left-color: #BADA55; /* Different color for Appendix border */
+}
+
+.location-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+.location-matrix th, .location-matrix td {
+    border: 1px solid var(--line-color);
+    padding: 8px;
+    text-align: left;
+}
+
+.location-matrix th {
+    background-color: var(--nyp-blue-light);
+    color: white;
+    font-weight: bold;
+}
+
+.location-matrix tr:nth-child(even) {
+    background-color: #242424;
+}
+
+.closing-note p {
+    font-style: italic;
+    color: #AAAAAA;
+    padding: 10px;
+    border: 1px dashed var(--nyp-blue-light);
+    border-radius: 4px;
+}
+
+/* Media Query for Mobile Responsiveness */
+@media (max-width: 768px) {
+    .case-file-container {
+        padding: 15px;
+        margin: 10px auto 60px auto;
+    }
+
+    .metadata-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .poi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nyp-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .case-info-header {
+        margin-top: 5px;
+        text-align: center;
+    }
+
+    .nyp-footer {
+        font-size: 0.65em;
+    }
+}

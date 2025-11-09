@@ -1,121 +1,129 @@
-// Service Worker Version, update this string to force users to download new assets
-const CACHE_VERSION = 'news-pwa-v1.0.0';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced News Hub PWA</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for mobile-first design */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+            color: #1e293b;
+        }
+        .article-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
 
-// Cache names for different types of assets
-const STATIC_CACHE = `${CACHE_VERSION}-static-assets`;
-const NEWS_CACHE = `${CACHE_VERSION}-dynamic-news`;
+    <div id="app" class="min-h-screen">
+        <!-- Header / Navigation Bar -->
+        <header class="bg-indigo-700 shadow-lg sticky top-0 z-10">
+            <div class="max-w-4xl mx-auto p-4 flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-white tracking-tight">
+                    <span class="block sm:inline">The </span>
+                    <span class="text-indigo-200">Velocity</span>
+                    <span class="block text-sm font-normal text-indigo-300">Your Advanced News Source</span>
+                </h1>
+                <button id="menu-btn" class="text-white p-2 rounded-full hover:bg-indigo-600 transition duration-150">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </header>
 
-// Files that define the App Shell, which should always be cached for offline use
-const ASSETS_TO_CACHE = [
-    '/',
-    '/index.html',
-    'https://cdn.tailwindcss.com', // Tailwind CSS link
-    // Add paths to local CSS, JS, and font files here
-];
+        <!-- Main Content Area -->
+        <main class="max-w-4xl mx-auto p-4 sm:p-6">
 
-/***************************
- * 1. INSTALL EVENT
- * Caches the core App Shell assets immediately.
- ***************************/
-self.addEventListener('install', (event) => {
-    // Perform installation steps
-    console.log('[Service Worker] Installing...');
-    event.waitUntil(
-        caches.open(STATIC_CACHE)
-            .then((cache) => {
-                console.log('[Service Worker] Caching App Shell');
-                // Use catch to prevent install failure if external asset fetching fails
-                return cache.addAll(ASSETS_TO_CACHE).catch(err => {
-                    console.warn('[Service Worker] Failed to cache some assets (e.g., Tailwind CDN)', err);
-                    // Crucially, still resolve the promise for the core files we *can* cache
-                    return Promise.resolve();
-                });
-            })
-            .then(() => self.skipWaiting()) // Activates the new worker immediately
-    );
-});
+            <!-- Hero/Lead Story Section -->
+            <section id="lead-story" class="bg-white rounded-xl shadow-xl overflow-hidden mb-8 border-t-4 border-indigo-500">
+                <div class="p-6">
+                    <span class="text-xs font-semibold text-indigo-600 uppercase">Breaking</span>
+                    <h2 class="text-3xl font-extrabold mt-1 mb-3 leading-tight">Future Tech Unveiled: The Era of Quantum Computing for Everyone</h2>
+                    <p class="text-gray-600 mb-4">Experts confirm a major breakthrough in making quantum processing units accessible to consumer markets by 2030, fundamentally changing data security and processing power globally.</p>
+                    <img src="https://placehold.co/800x400/5c6bc0/ffffff?text=FUTURE+TECH" alt="Quantum Computing Visual" class="w-full rounded-lg h-48 object-cover mb-4">
+                    <div class="flex items-center text-sm text-gray-500">
+                        <svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l3 3a1 1 0 001.414-1.414L11 9.586V6z" clip-rule="evenodd"></path></svg>
+                        <span>5 minutes ago</span>
+                    </div>
+                </div>
+            </section>
 
+            <!-- Articles Grid -->
+            <section id="latest-news" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Article 1 -->
+                <article class="article-card bg-white p-5 rounded-xl shadow-md border-l-4 border-yellow-500">
+                    <h3 class="text-xl font-bold mb-2">Global Markets Rally as Inflation Fears Subside</h3>
+                    <p class="text-gray-600 mb-3 text-sm">Central banks signal stability, leading to record gains in tech and energy sectors.</p>
+                    <div class="text-xs text-gray-400">Finance | 1 hour ago</div>
+                </article>
 
-/***************************
- * 2. ACTIVATE EVENT
- * Cleans up old caches to save user space.
- ***************************/
-self.addEventListener('activate', (event) => {
-    console.log('[Service Worker] Activating and cleaning up old caches...');
-    const cacheAllowList = [STATIC_CACHE, NEWS_CACHE];
+                <!-- Article 2 -->
+                <article class="article-card bg-white p-5 rounded-xl shadow-md border-l-4 border-green-500">
+                    <h3 class="text-xl font-bold mb-2">New Renewable Energy Source Discovered in Iceland</h3>
+                    <p class="text-gray-600 mb-3 text-sm">Geothermal experts confirm a previously unknown energy reserve capable of powering a small country.</p>
+                    <div class="text-xs text-gray-400">Environment | 3 hours ago</div>
+                </article>
 
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cacheName) => {
-                    if (cacheAllowList.indexOf(cacheName) === -1) {
-                        // Delete old or unused caches
-                        console.log(`[Service Worker] Deleting old cache: ${cacheName}`);
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
-        }).then(() => {
-            // Ensure the Service Worker takes control of the current page immediately
-            return self.clients.claim();
-        })
-    );
-});
+                <!-- Article 3 -->
+                <article class="article-card bg-white p-5 rounded-xl shadow-md border-l-4 border-red-500">
+                    <h3 class="text-xl font-bold mb-2">Space Telescope Captures Stunning Nebulae Images</h3>
+                    <p class="text-gray-600 mb-3 text-sm">Astronomers excited by the clarity and detail of the new cosmic observations.</p>
+                    <div class="text-xs text-gray-400">Science | 1 day ago</div>
+                </article>
 
+                <!-- Article 4 -->
+                <article class="article-card bg-white p-5 rounded-xl shadow-md border-l-4 border-blue-500">
+                    <h3 class="text-xl font-bold mb-2">Local Elections Result in Historic Voter Turnout</h3>
+                    <p class="text-gray-600 mb-3 text-sm">The latest polls show a clear mandate for infrastructure development over the next four years.</p>
+                    <div class="text-xs text-gray-400">Politics | 2 days ago</div>
+                </article>
+            </section>
+        </main>
+    </div>
 
-/***************************
- * 3. FETCH EVENT
- * Determines how to respond to network requests (caching strategies).
- ***************************/
-self.addEventListener('fetch', (event) => {
-    // Check if the request is for a network resource (not an extension or internal request)
-    if (event.request.url.startsWith('chrome-extension://')) {
-        return;
-    }
-
-    const requestUrl = new URL(event.request.url);
-    const isStaticAsset = ASSETS_TO_CACHE.some(asset => event.request.url.includes(asset.replace('/', '')));
-
-    if (isStaticAsset || requestUrl.pathname === '/') {
-        // Strategy: Cache-First for App Shell (core assets)
-        event.respondWith(
-            caches.match(event.request)
-                .then(response => {
-                    // Return the cached asset, or fetch from network if not in cache
-                    return response || fetch(event.request);
-                })
-                .catch(err => {
-                    // This handles scenarios where fetch fails (e.g., completely offline)
-                    console.error('[Service Worker] Cache match failed and no network for static asset.', err);
-                    // You could serve a dedicated offline page here if needed
-                })
-        );
-    } else if (event.request.method === 'GET' && requestUrl.pathname.startsWith('/api/news')) {
-        // Strategy: Network-First with Cache Fallback for dynamic data (fresh news is important)
-        event.respondWith(
-            fetch(event.request)
-                .then(response => {
-                    // Clone the response before putting it in cache (a response can only be read once)
-                    const responseClone = response.clone();
-                    
-                    // Only cache successful responses (status 200)
-                    if (response.ok) {
-                        caches.open(NEWS_CACHE)
-                            .then(cache => {
-                                cache.put(event.request, responseClone);
+    <!-- Service Worker Registration Script -->
+    <script>
+        // Check for Service Worker support and register the file
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registered successfully with scope:', registration.scope);
+                        // Optional: Listen for updates (new SW versions)
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'activated') {
+                                    console.log('New Service Worker activated.');
+                                    // You could prompt the user to refresh here
+                                }
                             });
-                    }
-                    return response;
-                })
-                .catch(err => {
-                    // Network failed, fall back to the dynamic cache for stale data
-                    console.log('[Service Worker] Network failed. Falling back to dynamic cache.', err);
-                    return caches.match(event.request);
-                })
-        );
-    } else {
-        // Default: Network only for all other requests
-        return fetch(event.request);
-    }
-});
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        }
+
+        // Basic offline notification (simple example, replace with custom UI)
+        window.addEventListener('offline', () => {
+            console.log("You are currently offline.");
+            // In a real PWA, you'd show a custom banner here
+        });
+        window.addEventListener('online', () => {
+            console.log("You are back online.");
+        });
+    </script>
+
+</body>
+</html>
 
